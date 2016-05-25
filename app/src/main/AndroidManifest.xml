@@ -18,6 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetailBuku"
+            android:label="@string/title_activity_detail_buku"
+            android:parentActivityName=".HalamanDepan"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fana.caribuku.HalamanDepan" />
+        </activity>
     </application>
 
 </manifest>

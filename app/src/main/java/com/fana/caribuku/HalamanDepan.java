@@ -1,9 +1,7 @@
 package com.fana.caribuku;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,9 +10,59 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fana.caribuku.Adapter.CustomGrid;
+import com.fana.caribuku.Adapter.ExpandableHeightGridView;
 
 public class HalamanDepan extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    GridView grid;
+    String[] web = {
+            "Buku Satu",
+            "Buku Dua",
+            "Buku Tiga",
+            "Buku Empat",
+            "Buku Lima",
+            "Buku Enam",
+            "Buku Tujug",
+            "Buku Delapan",
+            "Buku Sembilan",
+            "Buku Sepuluh",
+            "Buku Sebelas",
+            "Buku Duabelas",
+            "Buku Sembilan",
+            "Buku Sepuluh",
+            "Buku Sebelas",
+            "Buku Duabelas"
+
+    } ;
+    int[] imageId = {
+            R.drawable.inggris,
+            R.drawable.bahasa,
+            R.drawable.matematika,
+            R.drawable.pai,
+            R.drawable.inggris,
+            R.drawable.bahasa,
+            R.drawable.matematika,
+            R.drawable.pai,
+            R.drawable.inggris,
+            R.drawable.bahasa,
+            R.drawable.matematika,
+            R.drawable.pai,
+            R.drawable.inggris,
+            R.drawable.bahasa,
+            R.drawable.matematika,
+            R.drawable.pai
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +71,28 @@ public class HalamanDepan extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        CustomGrid adapter = new CustomGrid(HalamanDepan.this, web, imageId);
+        ExpandableHeightGridView grid= (ExpandableHeightGridView) findViewById(R.id.gv_items);
+//        grid.setVerticalScrollBarEnabled(false);
+        grid.setFocusable(false);
+        grid.setAdapter(adapter);
+        grid.setExpanded(true);
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent(HalamanDepan.this,DetailBuku.class);
+                //harusnya diambil dari database
+                intent.putExtra("buku_nama",web[+ position]);
+                intent.putExtra("buku_id_gambar",imageId[+ position]);
+                startActivity(intent);
+
+                //Toast.makeText(HalamanDepan.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
+
             }
-        });*/
+        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,6 +102,7 @@ public class HalamanDepan extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
