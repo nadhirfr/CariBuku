@@ -1,4 +1,4 @@
-package com.fana.caribuku;
+package com.fana.caribuku.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.fana.caribuku.R;
 
 public class Keranjang extends AppCompatActivity {
 
