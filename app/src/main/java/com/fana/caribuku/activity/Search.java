@@ -1,12 +1,18 @@
 package com.fana.caribuku.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,7 +23,8 @@ import com.fana.caribuku.R;
 
 import java.util.Arrays;
 
-public class Search extends AppCompatActivity {
+public class Search extends AppCompatActivity
+        implements TextWatcher{
     String[] text = {};
     int[] image = {};
     public int j = 0;
@@ -77,6 +84,58 @@ public class Search extends AppCompatActivity {
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    doSearch(edSearch.getText().toString());
+                    handled = true;
+                }
+                //sembunyikan virtual keyboard setelah melakukan pencarian
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edSearch.getWindowToken(), 0);
+                return handled;
+            }
+        });
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        /*if (edSearch.getText().toString().isEmpty()) {
+            clearText.setVisibility(View.GONE);
+        }else{
+            clearText.setVisibility(View.VISIBLE);
+        }*/
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        /*if (search.getText().toString().isEmpty()) {
+            clearText.setVisibility(View.GONE);
+        }else{
+            clearText.setVisibility(View.VISIBLE);
+        }*/
+        // ketika text berubah kasih logik bisa hide / visible
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    /**
+     *
+     * @param search
+     */
+    private void doSearch(String search){
+        // lakukan proses search disini
+    }
+
 
 }
