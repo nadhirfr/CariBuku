@@ -117,7 +117,9 @@ public class HalamanDepan extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
         // User pressed the search button
-        
+        Intent intent = new Intent(HalamanDepan.this, Search.class);
+        intent.putExtra("keyword",query);
+        startActivity(intent);
         return false;
     }
 

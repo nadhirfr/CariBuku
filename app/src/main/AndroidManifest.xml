@@ -55,7 +55,7 @@
                 android:value="com.fana.caribuku.activity.Bayar" />
         </activity>
         <activity
-            android:name=".Search"
+            android:name=".activity.Search"
             android:label="@string/title_activity_search"
             android:parentActivityName=".activity.HalamanDepan"
             android:theme="@style/AppTheme.NoActionBar" >
