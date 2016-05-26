@@ -150,6 +150,7 @@ public class HalamanDepan extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
+            startActivity(new Intent(this,Search.class));
             return true;
         }
 

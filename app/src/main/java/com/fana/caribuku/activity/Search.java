@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fana.caribuku.Adapter.CustomGrid;
 import com.fana.caribuku.Adapter.ExpandableHeightGridView;
@@ -19,12 +21,21 @@ public class Search extends AppCompatActivity {
     String[] text = {};
     int[] image = {};
     public int j = 0;
+
+    EditText edSearch;
+    TextView btnClose;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search_book);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // instantiate widget
+        edSearch = (EditText) findViewById(R.id.txt_search);
+        btnClose = (TextView) findViewById(R.id.close);
+
 
         Intent intent = getIntent();
         String[] web = intent.getStringArrayExtra("all_text");

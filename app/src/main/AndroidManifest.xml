@@ -54,18 +54,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fana.caribuku.activity.Bayar" />
         </activity>
-        <activity
-            android:name=".activity.Search"
-            android:label="@string/title_activity_search"
-            android:parentActivityName=".activity.HalamanDepan"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.fana.caribuku.activity.HalamanDepan" />
-        </activity>
-        <intent-filter>
-            <action android:name="android.intent.action.SEARCH" />
-        </intent-filter>
     </application>
 
 </manifest>

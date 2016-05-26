@@ -17,4 +17,36 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--search style-->
+    <!--edit text search-->
+    <style name="Search.EditTextSearch" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@color/primary_background</item>
+        <item name="android:ems">10</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:inputType">textFilter</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--search close button-->
+    <style name="Search.CloseButton" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:text">@string/close</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+    <!--end search style-->
+
+    <color name="primary_background">#FFFFFF</color>
+    <color name="hint_color">#787878</color>
+    <string name="close">Close</string>
 </resources>
