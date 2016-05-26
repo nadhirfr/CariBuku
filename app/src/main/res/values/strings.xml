@@ -13,4 +13,5 @@
                             \n\n</string>
     <string name="title_activity_bayar">Bayar</string>
     <string name="title_activity_konfirmasi">Konfirmasi</string>
+    <string name="title_activity_search">Search</string>
 </resources>
