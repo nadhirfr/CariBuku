@@ -11,4 +11,5 @@
     <string name="desc">Bagian Ini di isi Alamat\n
                             Alamat: Jalan Raya no.5\nKota Jakarta\n\n
                             \n\n</string>
+    <string name="title_activity_bayar">Bayar</string>
 </resources>
