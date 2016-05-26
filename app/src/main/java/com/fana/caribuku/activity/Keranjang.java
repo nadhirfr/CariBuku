@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -60,6 +61,15 @@ public class Keranjang extends AppCompatActivity {
         ImageView iv_keranjang_gambar = (ImageView) findViewById(R.id.iv_keranjang_buku);
         iv_keranjang_gambar.setImageResource(idGambar);
 
+        Button bt_keranjang_submit  = (Button) findViewById(R.id.bt_keranjang_submit);
+        bt_keranjang_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Keranjang.this,Bayar.class);
+                //intent.putExtra()
+                startActivity(intent);
+            }
+        });
 
     }
 

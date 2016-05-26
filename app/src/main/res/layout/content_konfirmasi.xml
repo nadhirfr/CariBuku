@@ -85,6 +85,7 @@
             android:text="Upload bukti transaksi Anda" />
     </LinearLayout>
     <Button
+        android:id="@+id/bt_konfirmasi_kirim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Kirim" />
