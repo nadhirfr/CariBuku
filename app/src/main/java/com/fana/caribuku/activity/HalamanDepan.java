@@ -24,7 +24,7 @@ public class HalamanDepan extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener {
 
     GridView grid;
-    String[] web = {
+    public String[] web = {
             "Buku Satu",
             "Buku Dua",
             "Buku Tiga",
@@ -43,7 +43,7 @@ public class HalamanDepan extends AppCompatActivity
             "Buku Duabelas"
 
     } ;
-    int[] imageId = {
+    public int[] imageId = {
             R.drawable.inggris,
             R.drawable.bahasa,
             R.drawable.matematika,
@@ -119,6 +119,8 @@ public class HalamanDepan extends AppCompatActivity
         // User pressed the search button
         Intent intent = new Intent(HalamanDepan.this, Search.class);
         intent.putExtra("keyword",query);
+        intent.putExtra("all_text",web);
+        intent.putExtra("all_image",imageId);
         startActivity(intent);
         return false;
     }

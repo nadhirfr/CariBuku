@@ -9,4 +9,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_search" tools:context=".activity.Search">
 
+    <com.fana.caribuku.Adapter.ExpandableHeightGridView
+        android:id="@+id/gv_items_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="70dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="2dp"
+        android:fastScrollEnabled="false"
+        android:horizontalSpacing="2dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:layout_below="@+id/tv_detail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </LinearLayout>
