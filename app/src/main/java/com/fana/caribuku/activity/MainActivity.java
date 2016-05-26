@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.fana.caribuku.R;
+import com.fana.caribuku.api.ConfigApp;
 import com.gamatechno.gtfwm.Gtfw;
 import com.gamatechno.gtfwm.log.SysLog;
 import com.gamatechno.gtfwm.network.Rest;
@@ -12,15 +14,16 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.et_username)
+    @BindView(R.id.et_username)
     TextView et_username;
-    @Bind(R.id.et_password)
+    @BindView (R.id.et_password)
     TextView et_passowrd;
     private Rest rest;
     private Gson gson;
