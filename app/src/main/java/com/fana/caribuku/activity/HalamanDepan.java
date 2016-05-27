@@ -1,8 +1,12 @@
 package com.fana.caribuku.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,15 +19,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
-import com.fana.caribuku.Adapter.CustomGrid;
-import com.fana.caribuku.Adapter.ExpandableHeightGridView;
+import com.fana.caribuku.adapter.CustomGrid;
+import com.fana.caribuku.adapter.ExpandableHeightGridView;
 import com.fana.caribuku.R;
+import com.fana.caribuku.fragment.Fragment_Search;
 
 public class HalamanDepan extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener {
+        implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener,Fragment_Search.OnFragmentInteractionListener {
 
     GridView grid;
+    public String query;
     public String[] web = {
             "Buku Satu",
             "Buku Dua",
@@ -86,9 +93,6 @@ public class HalamanDepan extends AppCompatActivity
                 intent.putExtra("buku_nama",web[+ position]);
                 intent.putExtra("buku_id_gambar",imageId[+ position]);
                 startActivity(intent);
-
-                //Toast.makeText(HalamanDepan.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -116,26 +120,60 @@ public class HalamanDepan extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        // User pressed the search button
-        Intent intent = new Intent(HalamanDepan.this, Search.class);
-        intent.putExtra("keyword",query);
-        intent.putExtra("all_text",web);
-        intent.putExtra("all_image",imageId);
-        startActivity(intent);
+        this.query = query;
+        //sudah dihandle di onQueryTextChange
+        /*Bundle bundle = new Bundle();
+        bundle.putString("query",query);
+        Fragment fragment_search = new Fragment_Search();
+        fragment_search.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
+        fragmentTransaction.commit();*/
+
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
         // User changed the text
+        Bundle bundle = new Bundle();
+        bundle.putString("query",newText);
+        Fragment fragment_search = new Fragment_Search();
+        fragment_search.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
+        fragmentTransaction.commit();
         return false;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        final View sv_content_main =  findViewById(R.id.sv_content_main);
+        final View fl_fragment_container = findViewById(R.id.fl_fragment_container);
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        //searchItem.expandActionView();
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                Toast.makeText(HalamanDepan.this, "expand", Toast.LENGTH_SHORT).show();
+                onQueryTextChange(null);
+                sv_content_main.setVisibility(View.GONE);
+                fl_fragment_container.setVisibility(View.VISIBLE);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                Toast.makeText(HalamanDepan.this, "collapse", Toast.LENGTH_SHORT).show();
+                sv_content_main.setVisibility(View.VISIBLE);
+                fl_fragment_container.setVisibility(View.GONE);
+                return true;
+            }
+        });
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         return true;
@@ -150,7 +188,7 @@ public class HalamanDepan extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            startActivity(new Intent(this,Search.class));
+
             return true;
         }
 
@@ -180,5 +218,10 @@ public class HalamanDepan extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

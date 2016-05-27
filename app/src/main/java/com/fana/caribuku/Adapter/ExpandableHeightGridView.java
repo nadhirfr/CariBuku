@@ -1,4 +1,4 @@
-package com.fana.caribuku.Adapter;
+package com.fana.caribuku.adapter;
 
 import android.content.Context;
 import android.util.AttributeSet;
