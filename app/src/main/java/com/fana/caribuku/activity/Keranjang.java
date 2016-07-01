@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
 import com.fana.caribuku.R;
+import com.fana.caribuku.singleton.VolleySingleton;
 
 public class Keranjang extends AppCompatActivity {
 
@@ -25,15 +28,21 @@ public class Keranjang extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //instansiasi objek di xml
+        TextView tv_keranjang_judul = (TextView) findViewById(R.id.tv_keranjang_judul);
+        NetworkImageView iv_keranjang_gambar = (NetworkImageView) findViewById(R.id.iv_keranjang_buku);
+        Button bt_keranjang_submit  = (Button) findViewById(R.id.bt_keranjang_submit);
+
+        //ambil data
+        Intent intent = getIntent();
+        String judul = intent.getStringExtra("buku_nama");
+        String idGambar = intent.getStringExtra("buku_id_gambar");
+
+        //set value
+        tv_keranjang_judul.setText(judul);
+        iv_keranjang_gambar.setImageUrl(idGambar, VolleySingleton.getInstance(getApplicationContext()).getImageLoader());
 
         // ini spiner_jumlah
         Spinner dropdown_jumlah = (Spinner)findViewById(R.id.spinner_jumlah);
@@ -53,16 +62,7 @@ public class Keranjang extends AppCompatActivity {
         ArrayAdapter<String> adapter_paket = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items_paket);
         dropdown_paket.setAdapter(adapter_paket);
 
-        Intent intent = getIntent();
-        String judul = intent.getStringExtra("buku_nama");
-        int idGambar = intent.getIntExtra("buku_id_gambar", 0);
 
-        TextView tv_keranjang_judul = (TextView) findViewById(R.id.tv_keranjang_judul);
-        tv_keranjang_judul.setText(judul);
-        ImageView iv_keranjang_gambar = (ImageView) findViewById(R.id.iv_keranjang_buku);
-        iv_keranjang_gambar.setImageResource(idGambar);
-
-        Button bt_keranjang_submit  = (Button) findViewById(R.id.bt_keranjang_submit);
         bt_keranjang_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

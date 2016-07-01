@@ -13,11 +13,25 @@
     tools:context=".activity.DetailBuku"
     tools:showIn="@layout/activity_detail_buku">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:id="@+id/sv_content_detail_buku"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:fadingEdge="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/ll_content_detail_buku"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24dp"
         android:textStyle="bold"
+        android:text="Judul"
         android:id="@+id/detailbuku_judul"
         />
     <RelativeLayout
@@ -105,11 +119,12 @@
                     android:layout_width="0px"
                     android:layout_column="1" />
                 <TextView
-                    android:text="Dee"
+                    android:text="Dee\nkuda"
+                    android:id="@+id/tv_detail_pengarang"
                     android:layout_weight="1"
                     android:layout_marginLeft="10dp"
                     android:layout_width="0px"
-                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_column="1" />
                 />
             </TableRow>
@@ -126,6 +141,7 @@
                     android:layout_column="1" />
                 <TextView
                     android:text="2012"
+                    android:id="@+id/tv_detail_tahun_terbit"
                     android:layout_weight="1"
                     android:layout_marginLeft="10dp"
                     android:layout_width="0px"
@@ -146,6 +162,7 @@
                     android:layout_column="1" />
                 <TextView
                     android:text="Gramedia"
+                    android:id="@+id/tv_detail_penerbit"
                     android:layout_weight="1"
                     android:layout_marginLeft="10dp"
                     android:layout_width="0px"
@@ -179,5 +196,6 @@
             android:text="Bagian ini diisi sinopsis buku."/>
 
     </LinearLayout>
-
+        </LinearLayout>
+</ScrollView>
 </LinearLayout>

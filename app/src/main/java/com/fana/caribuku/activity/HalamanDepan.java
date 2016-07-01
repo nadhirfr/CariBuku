@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,9 @@ public class HalamanDepan extends AppCompatActivity
 
     GridView grid;
     public String query;
+    private String TAG;
+    Fragment fragment_search = new Fragment_Search();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +55,52 @@ public class HalamanDepan extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //membuat arraylist baru untuk menampung data dari internet
         final ArrayList<String> judul_buku = new ArrayList<>();
         final ArrayList<String> gambar_buku = new ArrayList<>();
-        RequestQueue requestQueue = Volley.newRequestQueue(this.getApplicationContext());
+        final ArrayList<String> penerbit_buku = new ArrayList<>();
+        final ArrayList<String> terbit_buku = new ArrayList<>();
+        final ArrayList<String[]> pengarang_buku = new ArrayList<>();
 
+        /* Request data dari internet (json) menggunakan Volley library start */
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getApplicationContext());
+        //url berupa json (biasanya jsonArray)
         String url = "https://raw.githubusercontent.com/SlexAxton/books.jquery.com/master/books/jquery-amazon-books.json";
 //        String url = "https://raw.githubusercontent.com/tamingtext/book/master/apache-solr/example/exampledocs/books.json";
 //        String url = "http://api.androidhive.info/feed/feed.json";
-
+        //membuat string request dari url
         StringRequest stringRequest = new StringRequest(StringRequest.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                String result = "";
+                //respon berupa string s
                 try {
+//                    String author = "";
+                    //dari string s diubah ke jsonArray
                     JSONArray jsonArray = new JSONArray(s);
                     for (int i = 0;i<jsonArray.length();i++) {
-                            JSONObject item = jsonArray.getJSONObject(i);
-                            judul_buku.add(i, item.getString("Title"));
-                            if (item.has("Image")) {
-                                gambar_buku.add(i, item.getString("Image"));
+                        //masing2 jsonObject di jsonArray diambil variable "item"
+                        //jadi didalam jsonArray itu terdapat beberapa jsonObject
+                        JSONObject item = jsonArray.getJSONObject(i);
+                        //memasukkan data dari jsonObject ke ArrayList yang dibuat
+                        //perbedaan getString dan optString :
+                        // jika optString ketika key yg diambil tidak ada maka akan diisi dengan "",
+                        // jika getString ketika key yg diambil tidak ada maka akan throwError
+                        judul_buku.add(i, item.getString("Title"));
+                        penerbit_buku.add(i,item.optString("Publisher"));
+                        terbit_buku.add(i,item.optString("Published"));
+                        gambar_buku.add(i, item.optString("Image"));
+
+                        if (item.has("Author")){
+                            JSONArray authorArray = item.getJSONArray("Author");
+                            String[] authors = new String[authorArray.length()];
+                            for (int x = 0;x<authorArray.length();x++){
+                                 authors[x] = authorArray.getString(x);
+                                }
+                            pengarang_buku.add(i,authors);
                             } else {
-                                gambar_buku.add(i, "http://ecx.images-amazon.com/images/I/51P7t9vZ7FL.jpg");
+                                String[] authorNull = new String[1];
+                                authorNull[0] = "-";
+                                pengarang_buku.add(i,authorNull);
                             }
                         }
                     } catch (JSONException e) {
@@ -83,9 +112,8 @@ public class HalamanDepan extends AppCompatActivity
                 String[] imageUrl = new String[gambar_buku.size()];
                 web = judul_buku.toArray(web);
                 imageUrl = gambar_buku.toArray(imageUrl);
-                final String[] finalWeb = web;
-                final String[] finalImageUrl = imageUrl;
 
+                //mengirim data (judul, dan url gambar) ke GridView
                 CustomGrid adapter = new CustomGrid(HalamanDepan.this, web, imageUrl);
                 ExpandableHeightGridView grid= (ExpandableHeightGridView) findViewById(R.id.gv_items);
 //        grid.setVerticalScrollBarEnabled(false);
@@ -99,8 +127,13 @@ public class HalamanDepan extends AppCompatActivity
                                             int position, long id) {
                         Intent intent = new Intent(HalamanDepan.this,DetailBuku.class);
                         //harusnya diambil dari database
-                        intent.putExtra("buku_nama", finalWeb[+ position]);
-                        intent.putExtra("buku_id_gambar", finalImageUrl[+ position]);
+                        //kirim value ke activity detailBuku
+                        intent.putExtra("buku_nama", judul_buku.get(+position));
+                        intent.putExtra("buku_id_gambar", gambar_buku.get(+position));
+                        intent.putExtra("erbit", penerbit_buku.get(+position));
+                        intent.putExtra("buku_terbit", terbit_buku.get(+position));
+                        intent.putExtra("buku_pengarang", pengarang_buku.get(+position));
+                        //intent.putParcelableArrayListExtra("buku_pengarang", pengarang_buku.get(+position))
                         startActivity(intent);
                     }
                 });
@@ -133,14 +166,15 @@ public class HalamanDepan extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.query = query;
+        //mengirim query ke fragment search
         Bundle bundle = new Bundle();
         bundle.putString("query",query);
-        Fragment fragment_search = new Fragment_Search();
         fragment_search.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
@@ -178,6 +212,7 @@ public class HalamanDepan extends AppCompatActivity
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Toast.makeText(HalamanDepan.this, "expand", Toast.LENGTH_SHORT).show();
                 onQueryTextChange(null);
+                //ketika klik tombol search konten utama disembunyikan diganti fragmen
                 sv_content_main.setVisibility(View.GONE);
                 fl_fragment_container.setVisibility(View.VISIBLE);
                 return true;
@@ -186,8 +221,15 @@ public class HalamanDepan extends AppCompatActivity
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 Toast.makeText(HalamanDepan.this, "collapse", Toast.LENGTH_SHORT).show();
+                //ketika klik back fragmen disembunyikan diganti konten utama
                 sv_content_main.setVisibility(View.VISIBLE);
                 fl_fragment_container.setVisibility(View.GONE);
+
+//                Fragment fragment_search = new Fragment_Search();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.remove(fragment_search);
+                fragmentTransaction.commit();
+
                 return true;
             }
         });

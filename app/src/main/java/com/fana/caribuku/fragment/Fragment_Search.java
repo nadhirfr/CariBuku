@@ -98,6 +98,9 @@ public class Fragment_Search extends Fragment {
         final TextView tv_fragment_search = (TextView) view.findViewById(R.id.tv_fragment_search);
         final ArrayList<String> judul_buku = new ArrayList<>();
         final ArrayList<String> gambar_buku = new ArrayList<>();
+        final ArrayList<String> penerbit_buku = new ArrayList<>();
+        final ArrayList<String> terbit_buku = new ArrayList<>();
+        final ArrayList<String[]> pengarang_buku = new ArrayList<>();
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         String url = "https://raw.githubusercontent.com/SlexAxton/books.jquery.com/master/books/jquery-amazon-books.json";
@@ -107,22 +110,34 @@ public class Fragment_Search extends Fragment {
         StringRequest stringRequest = new StringRequest(StringRequest.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                String result = "";
+
                 try {
                     JSONArray jsonArray = new JSONArray(s);
-                    for (int i = 0;i<jsonArray.length();i++){
+                    for (int i = 0;i<jsonArray.length();i++){//masing2 jsonObject di jsonArray diambil variable "item"
+                        //jadi didalam jsonArray itu terdapat beberapa jsonObject
                         JSONObject item = jsonArray.getJSONObject(i);
-                        judul_buku.add(i,item.getString("Title"));
-                        if (item.has("Image")){
-                            gambar_buku.add(i, item.getString("Image"));
-                        } else {
-                            gambar_buku.add(i,"http://ecx.images-amazon.com/images/I/51P7t9vZ7FL.jpg");
-                        }
+                        //memasukkan data dari jsonObject ke ArrayList yang dibuat
+                        //perbedaan getString dan optString :
+                        // jika optString ketika key yg diambil tidak ada maka akan diisi dengan "",
+                        // jika getString ketika key yg diambil tidak ada maka akan throwError
+                        judul_buku.add(i, item.getString("Title"));
+                        penerbit_buku.add(i,item.optString("Publisher"));
+                        terbit_buku.add(i,item.optString("Published"));
+                        gambar_buku.add(i, item.optString("Image"));
 
+                        if (item.has("Author")){
+                            JSONArray authorArray = item.getJSONArray("Author");
+                            String[] authors = new String[authorArray.length()];
+                            for (int x = 0;x<authorArray.length();x++){
+                                authors[x] = authorArray.getString(x);
+                            }
+                            pengarang_buku.add(i,authors);
+                        } else {
+                            String[] authorNull = new String[1];
+                            authorNull[0] = "-";
+                            pengarang_buku.add(i,authorNull);
+                        }
                     }
-//
-                    result += "judul: "+judul_buku.size()+"\n";
-                    result += "gambar: "+gambar_buku.size()+"\n";
 //                    result += kuda.length;
 //                    result += kuda[10];
                 } catch (JSONException e) {
@@ -130,10 +145,7 @@ public class Fragment_Search extends Fragment {
                 }
                 //result = judul_buku.toString();
                 tv_fragment_search.setVisibility(View.VISIBLE);
-                tv_fragment_search.setText(result);
 
-
-//        text.setText(query);
                 if (query != null) {
                     view.findViewById(R.id.gv_items_search).setVisibility(View.VISIBLE);
                     String[] web = new String[judul_buku.size()];
@@ -158,7 +170,7 @@ public class Fragment_Search extends Fragment {
                         //TextView textView = (TextView) view.findViewById(R.id.tv_fragment_search);
                         tv_fragment_search.setText("Tidak Ditemukan!");
                     } else {
-                        tv_fragment_search.setText("Jumlah ditemukan:"+text.length);
+                        tv_fragment_search.setText("Jumlah ditemukan : "+text.length);
 
                     }
 
@@ -168,17 +180,18 @@ public class Fragment_Search extends Fragment {
                     grid.setFocusable(false);
                     grid.setAdapter(adapter);
                     grid.setExpanded(true);
-                    final String[] finalImage = image;
-                    final String[] finalText = text;
                     grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
                                                 int position, long id) {
                             Intent intent = new Intent(getActivity(), DetailBuku.class);
-                            //harusnya diambil dari database
-                            intent.putExtra("buku_nama", finalText[+position]);
-                            intent.putExtra("buku_id_gambar", finalImage[+position]);
+                            //harusnya diambil dari database//kirim value ke activity detailBuku
+                            intent.putExtra("buku_nama", judul_buku.get(+position));
+                            intent.putExtra("buku_id_gambar", gambar_buku.get(+position));
+                            intent.putExtra("buku_penerbit", penerbit_buku.get(+position));
+                            intent.putExtra("buku_terbit", terbit_buku.get(+position));
+                            intent.putExtra("buku_pengarang", pengarang_buku.get(+position));
                             startActivity(intent);
 
                             //Toast.makeText(HalamanDepan.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
@@ -230,6 +243,7 @@ public class Fragment_Search extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

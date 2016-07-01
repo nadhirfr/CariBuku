@@ -30,7 +30,7 @@
         android:layout_height="200dp"
         android:background="#fff"
         android:orientation="vertical">
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/iv_keranjang_buku"
             android:layout_width="150dp"
             android:layout_height="200dp"
