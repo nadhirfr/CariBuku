@@ -21,54 +21,28 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.fana.caribuku.adapter.CustomGrid;
 import com.fana.caribuku.adapter.ExpandableHeightGridView;
 import com.fana.caribuku.R;
 import com.fana.caribuku.fragment.Fragment_Search;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class HalamanDepan extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener,Fragment_Search.OnFragmentInteractionListener {
 
     GridView grid;
     public String query;
-    public String[] web = {
-            "Buku Satu",
-            "Buku Dua",
-            "Buku Tiga",
-            "Buku Empat",
-            "Buku Lima",
-            "Buku Enam",
-            "Buku Tujug",
-            "Buku Delapan",
-            "Buku Sembilan",
-            "Buku Sepuluh",
-            "Buku Sebelas",
-            "Buku Duabelas",
-            "Buku Sembilan",
-            "Buku Sepuluh",
-            "Buku Sebelas",
-            "Buku Duabelas"
-
-    } ;
-    public int[] imageId = {
-            R.drawable.inggris,
-            R.drawable.bahasa,
-            R.drawable.matematika,
-            R.drawable.pai,
-            R.drawable.inggris,
-            R.drawable.bahasa,
-            R.drawable.matematika,
-            R.drawable.pai,
-            R.drawable.inggris,
-            R.drawable.bahasa,
-            R.drawable.matematika,
-            R.drawable.pai,
-            R.drawable.inggris,
-            R.drawable.bahasa,
-            R.drawable.matematika,
-            R.drawable.pai
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,24 +51,67 @@ public class HalamanDepan extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        CustomGrid adapter = new CustomGrid(HalamanDepan.this, web, imageId);
-        ExpandableHeightGridView grid= (ExpandableHeightGridView) findViewById(R.id.gv_items);
-//        grid.setVerticalScrollBarEnabled(false);
-        grid.setFocusable(false);
-        grid.setAdapter(adapter);
-        grid.setExpanded(true);
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final ArrayList<String> judul_buku = new ArrayList<>();
+        final ArrayList<String> gambar_buku = new ArrayList<>();
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getApplicationContext());
 
+        String url = "https://raw.githubusercontent.com/SlexAxton/books.jquery.com/master/books/jquery-amazon-books.json";
+//        String url = "https://raw.githubusercontent.com/tamingtext/book/master/apache-solr/example/exampledocs/books.json";
+//        String url = "http://api.androidhive.info/feed/feed.json";
+
+        StringRequest stringRequest = new StringRequest(StringRequest.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(HalamanDepan.this,DetailBuku.class);
-                //harusnya diambil dari database
-                intent.putExtra("buku_nama",web[+ position]);
-                intent.putExtra("buku_id_gambar",imageId[+ position]);
-                startActivity(intent);
+            public void onResponse(String s) {
+                String result = "";
+                try {
+                    JSONArray jsonArray = new JSONArray(s);
+                    for (int i = 0;i<jsonArray.length();i++) {
+                            JSONObject item = jsonArray.getJSONObject(i);
+                            judul_buku.add(i, item.getString("Title"));
+                            if (item.has("Image")) {
+                                gambar_buku.add(i, item.getString("Image"));
+                            } else {
+                                gambar_buku.add(i, "http://ecx.images-amazon.com/images/I/51P7t9vZ7FL.jpg");
+                            }
+                        }
+                    } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //konversi dari arraylist ke array
+                String[] web = new String[judul_buku.size()];
+                String[] imageUrl = new String[gambar_buku.size()];
+                web = judul_buku.toArray(web);
+                imageUrl = gambar_buku.toArray(imageUrl);
+                final String[] finalWeb = web;
+                final String[] finalImageUrl = imageUrl;
+
+                CustomGrid adapter = new CustomGrid(HalamanDepan.this, web, imageUrl);
+                ExpandableHeightGridView grid= (ExpandableHeightGridView) findViewById(R.id.gv_items);
+//        grid.setVerticalScrollBarEnabled(false);
+                grid.setFocusable(false);
+                grid.setAdapter(adapter);
+                grid.setExpanded(true);
+                grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        Intent intent = new Intent(HalamanDepan.this,DetailBuku.class);
+                        //harusnya diambil dari database
+                        intent.putExtra("buku_nama", finalWeb[+ position]);
+                        intent.putExtra("buku_id_gambar", finalImageUrl[+ position]);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
             }
         });
+        requestQueue.add(stringRequest);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -121,28 +138,28 @@ public class HalamanDepan extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.query = query;
-        //sudah dihandle di onQueryTextChange
-        /*Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("query",query);
         Fragment fragment_search = new Fragment_Search();
         fragment_search.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
-        fragmentTransaction.commit();*/
+        fragmentTransaction.commit();
 
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        //sudah dihandle di onQueryTextSubmit
         // User changed the text
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         bundle.putString("query",newText);
         Fragment fragment_search = new Fragment_Search();
         fragment_search.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
         return false;
     }
 
@@ -203,6 +220,8 @@ public class HalamanDepan extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            Intent intent = new Intent(HalamanDepan.this,LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

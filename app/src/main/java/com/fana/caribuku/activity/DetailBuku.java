@@ -1,6 +1,7 @@
 package com.fana.caribuku.activity;
 
 import android.content.Intent;
+import android.net.Network;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.fana.caribuku.R;
+import com.fana.caribuku.singleton.VolleySingleton;
 
 public class DetailBuku extends AppCompatActivity {
 
@@ -23,12 +26,12 @@ public class DetailBuku extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String judul = intent.getStringExtra("buku_nama");
-        final int idImage = intent.getIntExtra("buku_id_gambar",0);
+        final String idImage = intent.getStringExtra("buku_id_gambar");
 
         TextView tv = (TextView) findViewById(R.id.detailbuku_judul) ;
-        ImageView iv = (ImageView) findViewById(R.id.detailbuku_gambar);
+        NetworkImageView iv = (NetworkImageView) findViewById(R.id.detailbuku_gambar);
         tv.setText(judul);
-        iv.setImageResource(idImage);
+        iv.setImageUrl(idImage, VolleySingleton.getInstance(this.getApplicationContext()).getImageLoader());
 
         Button beli = (Button) findViewById(R.id.detailbuku_beli);
         beli.setOnClickListener(new View.OnClickListener() {
