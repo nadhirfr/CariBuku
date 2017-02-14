@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.DetailBuku"
+    tools:showIn="@layout/activity_detail_buku">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:id="@+id/sv_content_detail_buku"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:fadingEdge="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/ll_content_detail_buku"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:text="Judul"
+        android:id="@+id/detailbuku_judul"
+        />
+    <RelativeLayout
+        android:padding="10dp"
+        android:background="#FFF"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:id="@+id/detailbuku_gambar"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailbuku_beli"
+            android:text="BELI"
+            android:layout_toRightOf="@+id/detailbuku_gambar"/>
+        <RelativeLayout
+            android:layout_below="@+id/detailbuku_beli"
+            android:gravity="bottom"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/detailbuku_gambar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:id="@+id/iv_detailBuku_lokasiToko"
+                android:src="@android:drawable/checkbox_on_background"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_detailBuku_lokasiToko"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gramedia"/>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_height="15dp"
+                android:layout_below="@+id/iv_detailBuku_lokasiToko"
+                android:id="@+id/iv_detailBuku_rak"
+                android:src="@android:drawable/checkbox_on_background"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_below="@+id/iv_detailBuku_lokasiToko"
+                android:layout_toRightOf="@+id/iv_detailBuku_rak"
+                android:layout_width="wrap_content"
+                android:text="Rak 7 B"
+                android:layout_height="wrap_content"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#FFF"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detail:"/>
+        <TableLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:padding="10dp"
+                    android:background="#BDBDBD"
+                    android:text="Pengarang"
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_column="1" />
+                <TextView
+                    android:text="Dee\nkuda"
+                    android:id="@+id/tv_detail_pengarang"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="0px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="1" />
+                />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:text="Tahun"
+                    android:padding="10dp"
+                    android:background="#BDBDBD"
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_column="1" />
+                <TextView
+                    android:text="2012"
+                    android:id="@+id/tv_detail_tahun_terbit"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1" />
+                />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:text="Penerbit"
+                    android:padding="10dp"
+                    android:background="#BDBDBD"
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_column="1" />
+                <TextView
+                    android:text="Gramedia"
+                    android:id="@+id/tv_detail_penerbit"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1" />
+                />
+            </TableRow>
+
+
+
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#FFF"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sinopsis:"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bagian ini diisi sinopsis buku."/>
+
+    </LinearLayout>
+        </LinearLayout>
+</ScrollView>
+</LinearLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.fana.caribuku.activity.Bayar"
+    tools:showIn="@layout/activity_bayar">
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Selamat!"
+    android:textStyle="bold"
+    android:textSize="24dp"
+    android:gravity="center"/>
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Pembelian anda berhasil"
+    android:textStyle="bold"
+    android:gravity="center"/>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:background="#FFF"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total yang harus dibayar adalah"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/tv_bayar_harga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Rp 20000"
+            android:gravity="center"
+            android:textSize="24dp"
+            />
+        <LinearLayout
+            android:padding="10dp"
+            android:background="#E0E0E0"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ID TRANSAKSI :"
+                android:layout_gravity="end"
+                android:textAlignment="textEnd"/>
+
+            <TextView
+                android:id="@+id/tv_bayar_id_tx"
+                android:paddingLeft="10dp"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1234"/>
+        </LinearLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:padding="10dp"
+        android:background="#FFF"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Silahkan bayar ke rekening pilihan anda:"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_bayar_ic_bca"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_bank_bca"
+                    />
+                <TextView
+                    android:id="@+id/tv_bayar_judul_bca"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/iv_bayar_ic_bca"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Bank BCA"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_bayar_no_rek_bca"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/tv_bayar_judul_bca"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="No. Rek : 456443"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/tv_bayar_no_rek_bca"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="A/N Budi"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_bayar_ic_bni"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_bank_bni"
+                    />
+                <TextView
+                    android:id="@+id/tv_bayar_judul_bni"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/iv_bayar_ic_bni"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Bank BNI"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_bayar_no_rek_bni"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/tv_bayar_judul_bni"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="No. Rek : 4455677"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/tv_bayar_no_rek_bni"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="A/N Budi"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_bayar_konfirmasi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="KONFIRMASI"/>
+
+</LinearLayout>
