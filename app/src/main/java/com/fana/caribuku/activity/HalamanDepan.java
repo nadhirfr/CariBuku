@@ -175,7 +175,12 @@ public class HalamanDepan extends AppCompatActivity
         //mengirim query ke fragment search
         Bundle bundle = new Bundle();
         bundle.putString("query",query);
-        fragment_search.setArguments(bundle);
+        if (fragment_search.getArguments() != null){
+            fragment_search.getArguments().clear();
+            fragment_search.getArguments().putString("query",query);
+        } else {
+            fragment_search.setArguments(bundle);
+        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
         fragmentTransaction.commit();
@@ -194,6 +199,9 @@ public class HalamanDepan extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fl_fragment_container,fragment_search);
         fragmentTransaction.commit();*/
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.remove(fragment_search);
+        fragmentTransaction.commit();
         return false;
     }
 
